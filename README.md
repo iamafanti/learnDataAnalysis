@@ -6,4 +6,13 @@ To use NumPy, we first need to import it into our python environment. NumPy is c
 
 `import numpy as np`
 
-We can construct ndarray object from python list using np.array() function. a. Vector `np.array([1,2,3])` b.Array `np.array([[53, 12, 15], [20, 21, 22], [31, 32, 33]])`
+We can construct ndarray object from python list using `np.array()` function. a. Vector `np.array([1,2,3])` b.Array `np.array([[53, 12, 15], [20, 21, 22], [31, 32, 33]])`
+
+We can use ndarray's **shape** property to show the structure of an array. For example:
+
+```
+vector = numpy.array([1, 2, 3, 4])
+print(vector.shape)
+```
+
+In the console, it will show a tuple of (4,) not an integer 4. 
