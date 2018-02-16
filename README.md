@@ -16,3 +16,11 @@ print(vector.shape)
 ```
 
 In the console, it will show a tuple of (4,) not an integer 4. 
+
+```
+matrix = numpy.array([[5, 10, 15], [20, 25, 30]])
+print(matrix.shape)
+```
+
+In the console, it will show a tuple of (2,3) which means that the matrix has 2 rows and 3 columns.
+
