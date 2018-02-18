@@ -24,3 +24,13 @@ print(matrix.shape)
 
 In the console, it will show a tuple of (2,3) which means that the matrix has 2 rows and 3 columns.
 
+We can import dataset using [numpy.genfromtxt()](http://docs.scipy.org/doc/numpy-1.10.0/reference/generated/numpy.genfromtxt.html) function.
+The name of the dataset is 'data.csv' and the data inside is seperated by commas which is called delimiter.
+```
+import numpy
+data_set = numpy.genfromtxt("data.csv", delimiter=",")
+```
+
+The above code would read in a file named data.csv file into a NumPy array. NumPy arrays are represented using the numpy.ndarray class. What's more, a delimiter of the right kind must be chosen. If not, there may be some errors.
+
+
