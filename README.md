@@ -31,6 +31,6 @@ import numpy
 data_set = numpy.genfromtxt("data.csv", delimiter=",")
 ```
 
-The above code would read in a file named data.csv file into a NumPy array. NumPy arrays are represented using the numpy.ndarray class. What's more, a delimiter of the right kind must be chosen. If not, there may be some errors.
+The above code would read in a file named data.csv file into a NumPy array. NumPy arrays are represented using the numpy.ndarray class. What's more, a delimiter of the right kind must be chosen. If not, there may be some errors as the default parameter of delimiter in genfromtxt function is `None`.
 
-
+Each value in a ndarray must have the same date type. [Ndarray's value types](http://docs.scipy.org/doc/numpy-1.10.1/user/basics.types.html) are similar to the types of Python such as bool, int, string, and float.
