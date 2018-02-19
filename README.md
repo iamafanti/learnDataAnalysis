@@ -1,6 +1,8 @@
 # learnDataAnalysis
 This is the notebook for me to learn data science.
 ## 1. NumPy
+
+### 1.1 Getting started with Numpy
 The core structure of NumPy is <font color=#0099ff>ndarray</font> object, which stands for N-dimension array. A 1-dimensional array is often referred to as a vector while a 2-dimensional array is often referred to as a matrix. 
 To use NumPy, we first need to import it into our python environment. NumPy is commonly imported using the alias **np**:
 
@@ -34,3 +36,11 @@ data_set = numpy.genfromtxt("data.csv", delimiter=",")
 The above code would read in a file named data.csv file into a NumPy array. NumPy arrays are represented using the numpy.ndarray class. What's more, a delimiter of the right kind must be chosen. If not, there may be some errors as the default parameter of delimiter in genfromtxt function is `None`.
 
 Each value in a ndarray must have the same date type. [Ndarray's value types](http://docs.scipy.org/doc/numpy-1.10.1/user/basics.types.html) are similar to the types of Python such as bool, int, string, and float.
+NumPy will automatically figure out an appropriate data type when reading in data or converting lists to arrays. You can check the data type of a NumPy array using the `dtype` property.
+
+As I mentioned above, ndarray only have a data type. So `genfromtxt()` funciton can change the data to what it guesses is the best type. However, this can lead to some trouble. For example, when the function think float is the right type for the array, the strings will be changed to `nan` which means "not a number". NumPy assigns an `na` value, which stands for "not available", when the value doesn't exist. `nan` and `na` values are types of missing data. 
+
+As NumPy displays numeric values in scientific notation by default, the number 1988 may be changed into 1.98800000e+03.
+
+We can use `skip_header` parameter to specify how many lines of a dataset can be seen as headers. `dtype` parameter can limit genfromtxt function the data type it choose. For example, if set `dtype` to "U75", 1988 can be imported as "1988".
+
