@@ -24,7 +24,9 @@ matrix = numpy.array([[5, 10, 15], [20, 25, 30]])
 print(matrix.shape)
 ```
 
-In the console, it will show a tuple of (2,3) which means that the matrix has 2 rows and 3 columns.
+In the console, it will show a tuple of (2,3) which means that the matrix has 2 rows and 3 columns. 
+
+You may see that when making matrix using array(), the parameter is a list of lists. Each list item is a row of the matrix.
 
 We can import dataset using [numpy.genfromtxt()](http://docs.scipy.org/doc/numpy-1.10.0/reference/generated/numpy.genfromtxt.html) function.
 The name of the dataset is 'data.csv' and the data inside is seperated by commas which is called delimiter.
@@ -96,4 +98,29 @@ array([25, 40])
 >> matrix[1:3,0:2]
 array([[20, 25],
        [35, 40]])
+```
+
+### 1.2 Compute with Numpy
+An important feature of Numpy is that it can do comparisons for entire arrays and returns an array of boolean value. For example:
+```
+vector = numpy.array([5, 10, 15, 20])
+vector == 10
+```
+The code above will generate the vector \[False, True, False, False\].
+It is the same with matrix. For example:
+```
+matrix = numpy.array([
+                    [5, 10, 15], 
+                    [20, 25, 30],
+                    [35, 40, 45]
+                 ])
+matrix == 25
+```
+The result is :
+```
+[
+    [False, False, False], 
+    [False, True,  False],
+    [False, False, False]
+]
 ```
