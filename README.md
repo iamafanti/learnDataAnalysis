@@ -130,5 +130,18 @@ The boolean matrix can be used to select intended data from an array as follows.
 vector = numpy.array([5, 10, 15, 20])  # crete an array
 equal_to_ten = (vector == 10)   # create a boolean vector
 
-print(vector[equal_to_ten])   #print out all the items fitted to boolean vector equal_to_ten
+print(vector[equal_to_ten])   #print out the array containing all the items fitted to boolean vector equal_to_ten, which is [10]
+```
+```
+matrix = numpy.array([
+                [5, 10, 15], 
+                [20, 25, 30],
+                [35, 40, 45]
+             ])
+second_column_25 = (matrix[:,1] == 25)
+print(matrix[second_column_25, :])    
+# The result is :
+# [
+#    [20, 25, 30]
+# ]
 ```
