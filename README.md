@@ -124,3 +124,11 @@ The result is :
     [False, False, False]
 ]
 ```
+
+The boolean matrix can be used to select intended data from an array as follows. 
+```
+vector = numpy.array([5, 10, 15, 20])  # crete an array
+equal_to_ten = (vector == 10)   # create a boolean vector
+
+print(vector[equal_to_ten])   #print out all the items fitted to boolean vector equal_to_ten
+```
