@@ -44,3 +44,56 @@ As NumPy displays numeric values in scientific notation by default, the number 1
 
 We can use `skip_header` parameter to specify how many lines of a dataset can be seen as headers. `dtype` parameter can limit genfromtxt function the data type it choose. For example, if set `dtype` to "U75", 1988 can be imported as "1988".
 
+#### Slice of Numpy array
+We can use the similar way to index arrays as python list. For example:
+```
+>> matrix = np.array([
+                        [5, 10, 15], 
+                        [20, 25, 30]
+                     ])
+>> matrix[1,2]
+30
+```
+Like lists, vector slicing is from the first index up to but not including the second index. The first parameter in bracket is row number and the second one is column. 
+
+The colon by itself : specifies that the entirety of a single dimension should be selected. Think of the colon as selecting from the first element in a dimension up to and including the last element. At the bottom are some typical examples:
+```
+>> matrix = np.array([
+                    [5, 10, 15], 
+                    [20, 25, 30],
+                    [35, 40, 45]
+                 ])
+>> matrix[:,1]
+array([10, 25, 40])
+```
+
+```
+>> matrix = np.array([
+                    [5, 10, 15], 
+                    [20, 25, 30],
+                    [35, 40, 45]
+                 ])
+>> matrix[:,0:2]
+array([[ 5, 10],
+       [20, 25],
+       [35, 40]])
+```
+```
+>> matrix[1:3,:]
+array([[20, 25, 30],
+       [35, 40, 45]])
+```
+```
+>> matrix[1:3,1]
+array([25, 40])
+```
+```
+>> matrix = np.array([
+                    [5, 10, 15], 
+                    [20, 25, 30],
+                    [35, 40, 45]
+                 ])
+>> matrix[1:3,0:2]
+array([[20, 25],
+       [35, 40]])
+```
