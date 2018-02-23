@@ -152,4 +152,4 @@ equal_to_ten_or_five = (vector == 10) | (vector == 5)
 vector[equal_to_ten_or_five] = 50
 print(vector)
 ```
-In the third line above, it change the ndarray 'vector' not create a new one. 
+In the third line above, it change the ndarray 'vector' not create a new one. The result is \[50, 50, 15, 20\]
