@@ -122,4 +122,28 @@ zinc_copper = food_info[columns]
 # Skipping the assignment.
 zinc_copper = food_info[["Zinc_(mg)", "Copper_(mg)"]]
 ```
-When selecting multiple columns, the order of the columns in the returned dataframe matches the order of the column names in the list of strings that you passed in. This allows you to easily explore specific columns that may not be positioned next to each other in the dataframe.
+When selecting multiple columns, the order of the columns in the returned dataframe matches the order of the column names in the list of strings that you passed in. This allows you to easily explore specific columns that may not be positioned next to each other in the dataframe.
+
+### Data Manipulation
+The following code will divide each value in the "Iron_(mg)" column by 1000, and return a new Series object with those values:
+```
+div_1000 = food_info["Iron_(mg)"] / 1000
+``` 
+pandas allows us to use any of the arithmetic operators to scale the values in a numerical column:
+```
+# Adds 100 to each value in the column and returns a Series object.
+add_100 = food_info["Iron_(mg)"] + 100
+
+# Subtracts 100 from each value in the column and returns a Series object.
+sub_100 = food_info["Iron_(mg)"] - 100
+
+# Multiplies each value in the column by 2 and returns a Series object.
+mult_2 = food_info["Iron_(mg)"]*2
+```
+In addition to transforming columns by numerical values, we can transform columns by other columns. When we use an arithmetic operator between two columns (Series objects), pandas will perform that computation in a pair-wise fashion, and return a new Series object. It applies the arithmetic operator to the first value in both columns, the second value in both columns, and so on.
+```
+water_energy = food_info["Water_(g)"] * food_info["Energ_Kcal"]
+```
+### Normalizing Columns
+While there are many ways to normalize data, one of the simplest ways is called [rescaling](https://en.wikipedia.org/wiki/Feature_scaling#Rescaling). The outcome of rescaling is that every value in a numeric column will range between 0 and 1 (with the column's minimum value being 0 and the maximum value being 1). Here's the formula for rescaling:
+![rescaling](images/rescaling.svg)
