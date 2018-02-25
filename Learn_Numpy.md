@@ -153,3 +153,29 @@ vector[equal_to_ten_or_five] = 50
 print(vector)
 ```
 In the third line above, it change the ndarray 'vector' not create a new one. The result is \[50, 50, 15, 20\]
+
+We can use astype method of ndarray to change the data type. A example is as follows:
+```
+vector = numpy.array(["1", "2", "3"])
+vector = vector.astype(float)
+```
+The code above will convert all of the values in vector to floats: [1.0, 2.0, 3.0].
+*Attention: Only call vector.astype(float) do not change the data type of 'vector'. You must assign it to another argument to create a new ndarray.*
+
+Numpy array has some built-in methods to do computations, such as sum(), mean(), max().
+Examples about how to use these methods are as follows.
+```vector = numpy.array([5, 10, 15, 20])
+vector.sum()
+# The result is 50.
+```
+If you want to compute on matrix, you have to select additionla parameter to determine which axis you want to use. `1` means that we want to perform the operation on each row, and `0` means on each column. For example:
+```
+matrix = numpy.array([
+                [5, 10, 15], 
+                [20, 25, 30],
+                [35, 40, 45]
+             ])
+matrix.sum(axis=1)
+# The result is [30, 75, 120].
+```
+*Attention: After using the computation mathods, the original ndarray will not be changed.*
