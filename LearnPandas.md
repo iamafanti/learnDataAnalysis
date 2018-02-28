@@ -146,4 +146,121 @@ water_energy = food_info["Water_(g)"] * food_info["Energ_Kcal"]
 ```
 ### Normalizing Columns
 While there are many ways to normalize data, one of the simplest ways is called [rescaling](https://en.wikipedia.org/wiki/Feature_scaling#Rescaling). The outcome of rescaling is that every value in a numeric column will range between 0 and 1 (with the column's minimum value being 0 and the maximum value being 1). Here's the formula for rescaling:
+
 ![rescaling](images/rescaling.svg)
+
+### Create a new column
+Add bracket notation to specify the name we want for that column, then use the assignment operator (=) to specify the Series object containing the values we want to assign to that column:
+```
+iron_grams = food_info["Iron_(mg)"] / 1000  
+food_info["Iron_(g)"] = iron_grams
+# Create a new column called Iron(g)
+```
+
+### Sorting a dataframe by a column
+DataFrame objects have a `sort_values()` method that we can use to sort the entire DataFrame. For example, to sort the DataFrame on the Sodium_(mg) column, pass in the column name to the DataFrame.sort_values() method, and assign the resulting DataFrame to a new variable. By default, pandas will sort the data by the column we specify in ascending order and return a new DataFrame, rather than modifying food_info itself. To customize the method's behavior, use the parameters listed in the [documentation](http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.sort_values.html):
+```
+# Sorts the DataFrame in-place, rather than returning a new DataFrame.
+food_info.sort_values("Sodium_(mg)", inplace=True)
+
+# Sorts by descending order, rather than ascending.
+food_info.sort_values("Sodium_(mg)", inplace=True, ascending=False)
+```
+*Attention: When the parameter "inplace" is set to True, then  it modifies the existing data frame and you need not assign it to a new data frame. Here is an example:*
+```
+df1 = df.sort_values(by='foo')
+# df1 will hold sorted dataframe and df will be intact
+
+df.sort_values(by='foo', inplace=True)
+# df will hold sorted values
+```
+
+### Missing data
+Missing data can take different forms. In python, `None` indicates no value. In pandas, `NaN` means 'not a number'. In general terms, both `NaN` and `None`can be called null values.
+
+If we want to see which values are NaN, we can use the `pandas.isnull()` function which takes a pandas series and returns a series of True and False values, the same way that NumPy did when we compared arrays.
+```
+sex = titanic_survival["sex"]
+sex_is_null = pandas.isnull(sex)
+sex_null_true = sex[sex_is_null]#select only the rows that have null values.
+```
+*Attention: Any calculations we do with a null value also result in a null value. So if you want do some calculations on a dataset using pandas, you must kick out the null values first of all.*
+
+We can use isnull() function to keep only the valid value:
+```
+age_is_null = pd.isnull(titanic_survival["age"])
+good_ages = titanic_survival["age"][age_is_null == False]
+# "good_ages" just has valid values.
+```
+
+*Attention: many pandas method can filter the missing data automatically. For example, if we use use the Series.mean() method to calculate the mean of a column, missing values will not be included in the calculation.*
+
+### Pivot tables
+We can use [`Dataframe.pivot_table()`](http://pandas.pydata.org/pandas-docs/stable/generated/pandas.pivot_table.html) method to simplify the procedure for calculating a specific subset of a column. For example:
+```
+passenger_class_fares = titanic_survival.pivot_table(index="pclass", values="fare", aggfunc=np.mean)
+```
+The first parameter of the method, index tells the method which column to group by. The second parameter values is the column that we want to apply the calculation to, and aggfunc specifies the calculation we want to perform. The default for the aggfunc parameter is actually the mean, so if we're calculating this we can omit this parameter.
+
+What's more, we can use the `DataFrame.pivot_table()` method to perform even more advanced tasks. If we pass a list of column names to the values parameter instead of a single value, we can perform calculations on multiple columns at once.
+```
+port_stats = titanic_survival.pivot_table(index="embarked", values=["fare","survived"],aggfunc=np.sum)
+```
+
+### Drop missing data
+We can use the [`DataFrame.dropna()`](http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.dropna.html) method on pandas DataFrames to remove missing values in matrix. The method will drop any rows or columns that contain missing values.
+The dropna() method takes an axis parameter, which indicates whether you would like to drop rows or columns. Specifying axis=0 or axis='index' will drop any rows that have null values, while specifying axis=1 or axis='columns' will drop any columns that have null values. We will use 0 and 1 since they're more commonly used, but you can use either.
+```
+new_titanic_survival = titanic_survival.dropna(axis=0,subset=["age", "sex"])
+#Drop all rows in titanic_survival where the columns "age" or "sex" have missing values 
+```
+
+### Using iloc to access rows
+When the dataset has been sorted by a column, the original index will not be sequential any more. 
+![sorted dataset](images/sorted_dataset.png)
+At this time, if you intentionally want to choose the first five rows, you have to use `DataFrame.iloc[]` method. The easy way to remember which is to remember that iloc[] stands for integer location, because you use integers and not labels to select the data. The following code will select the first 5 rows as shown above:
+```
+first_five_rows = new_titanic_survival.iloc[0:5]
+```
+
+### Select both rows and columns
+We can also index columns using both the loc[] and iloc[] methods. With .loc[], we specify the column label strings as we have in the earlier exercises in this missions. With iloc[], we simply use the integer number of the column, starting from the left-most column which is 0. Similar to indexing with NumPy arrays, you separate the row and columns with a comma, and can use a colon to specify a range or as a wildcard.
+```
+first_row_first_column = new_titanic_survival.iloc[0,0]
+all_rows_first_three_columns = new_titanic_survival.iloc[:,0:3]
+row_index_83_age = new_titanic_survival.loc[83,"age"]
+row_index_766_pclass = new_titanic_survival.loc[766,"pclass"]
+```
+
+### Reindexing Rows
+You can use `DataFrame.reset_index` to add a new sequential index after sorted by a column. The method retains the old index by adding an extra column to the dataframe with the old index values. However, you can throw away the old index by setting the 'drop' parameter to True.
+
+### Applying function to DataFrame
+To perform a complex calculation across pandas objects, we'll need to learn about the `DataFrame.apply()` method. By default, `DataFrame.apply()` will iterate through each column in a DataFrame, and perform on each column. When we create our function, we give it one parameter, apply() method passes each column to the parameter as a pandas series.
+
+The result from the function will be combined with all of the other results, and placed into a new series. The function results will have the same position as the column or row we generated them from. Let's look at a simple example:
+```
+# This function returns the hundredth item from a series
+def hundredth_row(column):
+    # Extract the hundredth item
+    hundredth_item = column.iloc[99]
+    return hundredth_item
+
+# Return the hundredth item from each column
+hundredth_row_var = titanic_survival.apply(hundredth_row)
+```
+By passing in the axis=1 argument, we can use the DataFrame.apply() method to iterate over rows instead of columns.
+```
+def which_class(row):
+    pclass = row['pclass']
+    if pd.isnull(pclass):
+        return "Unknown"
+    elif pclass == 1:
+        return "First Class"
+    elif pclass == 2:
+        return "Second Class"
+    else:
+        return "Third Class"
+
+classes = titanic_survivors.apply(which_class, axis=1)
+```
