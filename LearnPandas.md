@@ -222,6 +222,13 @@ At this time, if you intentionally want to choose the first five rows, you have 
 ```
 first_five_rows = new_titanic_survival.iloc[0:5]
 ```
+`iloc` method accepts the following objects for selection:
+<ul>
+    <li>An integer</li>
+    <li>A list of integers</li>
+    <li>A slice object</li>
+    <li>A Boolean array</li>
+</ul>
 
 ### Select both rows and columns
 We can also index columns using both the loc[] and iloc[] methods. With .loc[], we specify the column label strings as we have in the earlier exercises in this missions. With iloc[], we simply use the integer number of the column, starting from the left-most column which is 0. Similar to indexing with NumPy arrays, you separate the row and columns with a comma, and can use a colon to specify a range or as a wildcard.
@@ -328,4 +335,43 @@ series_custom > 50
 will actually return a Series object with a Boolean value for each film. That's because pandas applies the filter (> 50) to each value in the Series object. To retrieve the actual film names, we need to pass this Boolean series into the original Series object.
 ```
 series_greater_than_50 = series_custom[series_custom > 50]
+```
+
+### Setting custom indexes
+The dataframe object has a `set_index()` method that allows us to pass in the name of the column we want pandas to use as the Dataframe index. By default, pandas will create a new dataframe, index it by the values in the column we specify, then drop that column. The set_index() method has a few parameters that allow us to tweak this behavior:
+<ul>
+    <li>`inplace`: If set to True, this parameter will set the index for the current, "live" dataframe, instead of returning a new dataframe.</li>
+    <li>`drop`: If set to False, this parameter will keep the column we specified as the index, instead of dropping it.</li>
+</ul>
+
+Example:
+```
+fandango = pd.read_csv('fandango_score_comparison.csv')
+fandango_films = fandango.set_index("FILM", inplace=False, drop=False)
+#inplace must be set to false in order to create a new dataframe
+print(fandango_films.index)
+```
+
+### Apply()
+Recall that a dataframe object represents both rows and columns as Series objects. The apply() method in pandas allows us to specify Python logic that we want to evaluate over the Series objects in a dataframe.
+The apply() method requires us to pass in the vectorized operation we want to apply over each Series object. The method runs over the dataframe's columns by default, but we can use the axis parameter to change this. To apply a function over the rows in a dataframe (which pandas treats as Series objects), we need to set the axis parameter to 1. If the vectorized operation usually returns a single value it will return a Series object containing the computed value for each column. For example, in the following code, we use a lambda function to multiply each float column by 2:
+```
+types = fandango_films.dtypes
+float_columns = types[types.values == 'float64'].index
+# float_df contains only the float columns
+float_df = fandango_films[float_columns]
+
+# usage of a lambda function
+float_df.apply(lambda x: x*2)
+```
+In the code above, we passed a lambda function to the `DataFrame.apply()` method. A lambda function is also called an anonymous function, because we aren't defining a new, named function (e.g. a function called double()) and then using it. The lambda function x*2 is only only lives for the life of the DataFrame.apply() method call. A lambda function consists of 2 parts:
+<ul>
+    <li>a variable name, that we can refer to in our transformation logic: lambda x:</li>
+    <li>the transformation logic: x*2 (multiply by 2)</li>
+</ul>
+
+We can also pass in functions from NumPy. The following code returns a Series containing the standard deviation of each float column:
+```
+import numpy as np
+float_df.apply(lambda x: np.std(x))
 ```
