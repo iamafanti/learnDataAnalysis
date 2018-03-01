@@ -264,3 +264,68 @@ def which_class(row):
 
 classes = titanic_survivors.apply(which_class, axis=1)
 ```
+### Unique value
+Use the Series.unique() method to return the unique values in a column, like this: `recent_grads['Major_category'].unique()`
+
+
+
+# 2. Pandas internal
+There are 3 data structures in Pandas:
+<ul>
+    <li>Series objects (collections of values)</li>
+    <li>DataFrames (collections of Series objects)</li>
+    <li>Panels (collections of DataFrame objects)</li>
+</ul>
+Series objects use NumPy arrays for fast computation, but add valuable features to them for analyzing data. While NumPy arrays use an integer index, for example, Series objects can use other index types, such as a string index. Series objects also allow for mixed data types, and use the NaN Python value for handling missing values.
+
+DataFrames use Series objects to represent columns. When we select a single column from a DataFrame, pandas will return the Series object representing that column. By default, pandas indexes each individual Series object in a DataFrame with the integer data type. Each value in the Series has a unique integer index, or position. Like most Python data structures, the Series object uses 0-indexing. The indexing ranges from 0 to n-1, where n is the number of rows. We can use an integer index to select an individual value in a Series if we know its position.
+
+### Make Series
+If you want to make a series for yourself, you can import Series from Pandas.
+```
+from pandas import Series
+fandango = pd.read_csv('fandango_score_comparison.csv')
+series_film = fandango["FILM"]
+series_rt = fandango["RottenTomatoes"]
+
+film_names = series_film.values
+rt_scores = series_rt.values
+series_custom = Series(data=rt_scores, index=film_names)
+series_custom[['Minions (2015)', 'Leviathan (2014)']]# can see the rotten tomato value for those two movies.
+```
+This create a Series which has an index of film names. 
+
+### Reindexing
+Reindexing is the pandas way of modifying the alignment between labels (indexes) and the data (values). The `reindex()`method allows us to specify a different order for the labels (indexes) in a Series object. This method takes in a list of strings corresponding to the order we'd like for that Series object. If you want the `series_custom` sorted by the first character of movie name, you can pass a sorted list to reindex() method.
+```
+original_index = series_custom.index 
+# original_index is a list not sorted by the 1st character.
+sorted_by_index = series_custom.reindex(sorted(original_index))
+# sorted_by_index is a dataframe made from series_custom following the new index (sorted original_index)
+```
+
+But pandas has easier way to reindex. Pandas comes with a sort_index() method that sorts a Series by index, and a sort_values() method that sorts a Series by its values. Since the values representing the Rotten Tomatoes scores are integers, sorting by values will return the data in numerically ascending order (low to high).
+
+### Transform columns 
+A. We can use any of the standard Python arithmetic operators (+, -, *, and /) to transform each of the values in a Series object. 
+`series_custom/10`   This will return a new Series object where each value is 1/10 of the original value. 
+
+B. We can even use NumPy functions to transform and run calculations over Series objects:
+```
+# Add each value with each other
+np.add(series_custom, series_custom)
+# Apply sine function to each value
+np.sin(series_custom)
+# Return the highest value (will return a single value, not a Series)
+np.max(series_custom)
+```
+
+### Comparing and Filtering
+Pandas uses vectorized operations for many tasks, such as filtering values within a single Series object and comparing two different Series objects. For example, to find all films with an average critic rating of 50 or above on Rotten Tomatoes, running:
+```
+series_custom > 50
+```
+will actually return a Series object with a Boolean value for each film. That's because pandas applies the filter (> 50) to each value in the Series object. To retrieve the actual film names, we need to pass this Boolean series into the original Series object.
+```
+series_greater_than_50 = series_custom[series_custom > 50]
+```
