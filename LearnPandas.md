@@ -375,3 +375,10 @@ We can also pass in functions from NumPy. The following code returns a Series co
 import numpy as np
 float_df.apply(lambda x: np.std(x))
 ```
+### A small tips for the file foramt of data source
+
+
+
+# 3.Data Visualization
+Before this section, we always use tables as a source of data. However, after thousands of years of evolution, we are more good at handling visual format data. In this section, I summaried some impotant tips about how to use pandas to visualize data. 
+
