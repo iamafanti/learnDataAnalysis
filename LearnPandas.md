@@ -26,6 +26,8 @@ crime_rates = pandas.read_csv("crime_rates.csv")
 ```
 You can read more about the parameters the read_csv() method takes to customize how a file is read in on the [documentation page](http://pandas.pydata.org/pandas-docs/stable/generated/pandas.read_csv.html).
 
+*Attentioin: While the pandas library can read in XLSX files, it relies on an external library for actually parsing the format. *
+
 ### Exporing the Pandas dataframe
 When you call `head()` method, pandas will return **a new dataframe** containing just the first 5 rows:
 ```
@@ -377,8 +379,13 @@ float_df.apply(lambda x: np.std(x))
 ```
 ### A small tips for the file foramt of data source
 
+### DateTime type
+We can convert column to the datetime type using the pandas.to_datetime() function, which returns a Series object with the datetime data type that we can assign back to the DataFrame:
+```
+import pandas as pd
+df['col'] = pd.to_datetime(df['col'])
+# This line can change the 'col' column to datetime type.
+```
 
 
-# 3.Data Visualization
-Before this section, we always use tables as a source of data. However, after thousands of years of evolution, we are more good at handling visual format data. In this section, I summaried some impotant tips about how to use pandas to visualize data. 
 
