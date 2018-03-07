@@ -387,5 +387,9 @@ df['col'] = pd.to_datetime(df['col'])
 # This line can change the 'col' column to datetime type.
 ```
 
+To extract the month values from the DATE column and assign them to a new column, we can use the pandas.Series.dt accessor:
+`unrate['MONTH'] = unrate['DATE'].dt.month`
+Calling pandas.Series.dt.month returns a Series containing the integer values for each month (e.g. 1 for January, 2 for February, etc.). Under the hood, pandas applies the datetime.date function over each datetime value in the DATE column, which returns the integer month value. Let's now move onto generating multiple line charts in the same subplot.
+
 
 
