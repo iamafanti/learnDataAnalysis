@@ -73,4 +73,38 @@ When drawing multiple plots, the figure size remain the same. This can make the 
 `fig = plt.figure(figsize=(width, height))`
 The unit for both width and height values is inches. 
 
-### 
+### Overlaying line chart
+In the last mission, we called pyplot.plot() to generate a single line chart. Under the hood, matplotlib created a figure and a single subplot for this line chart. If we call pyplot.plot() multiple times, matplotlib will generate the line charts on the single subplot.
+```
+unrate['MONTH'] = unrate['DATE'].dt.month
+fig = plt.figure(figsize=(6,3))
+plt.plot(unrate['MONTH'][0:12],unrate["VALUE"][0:12],color='red')
+plt.plot(unrate['MONTH'][12:24],unrate["VALUE"][12:24],color='blue')
+plt.show()
+```
+
+### Legend
+We can create the legend using pyplot.legend and specify its location using the loc parameter:`plt.legend(loc='upper left')`
+If we're instead working with multiple subplots, we can create a legend for each subplot by mirroring the steps for each subplot. When we use plt.plot() and plt.legend(), the Axes.plot() and Axes.legend() methods are called under the hood and parameters passed to the calls. When we need to create a legend for each subplot, we can use Axes.legend() instead.
+
+### Title and labels
+```
+plt.title("Monthly Unemployment Trends, 1948-1952")
+plt.xlabel("Month, Integer")
+plt.ylabel("Unemployment Rate, Percent")
+```
+
+### Frequency and sort
+We can use Series.value_counts() to return the frequency distribution as Series object. 
+While this ordering is helpful when we're looking to quickly find the most common values in a given column, it's not helpful when trying to understand the range that the values in the column span. We can use Series.sort_index() to sort the frequency distribution in ascending order by the values in the column (which make up the index for the Series object). 
+![both pics](images/both_fandango_distributions.png)
+```
+imdb_distribution = norm_reviews["IMDB_norm"].value_counts()
+imdb_distribution = imdb_distribution.sort_index()
+
+```
+
+这里记一个idea，`fig, ax = plt.subplots()`为什么要弄一个figure，又弄一个axes，我想是因为有的matplotlib函数的主体是figure，有的是axes，有的是pyplot。
+
+课程中用到了matplotlib Axes.scatter()来画散点图，但其实所有类型的图都可以用pandas的DataFrame.plot()来画，只不过要设定kind参数的值。
+pandas有画图的功能，目前没有看到matplotlib的好处
